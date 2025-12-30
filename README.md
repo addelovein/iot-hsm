@@ -34,6 +34,11 @@ snapcraft
 ```
 
 ### Troubleshooting
+503 Service Unavailable behind Apache (proxy to IPv6 ::1 while Node listens on IPv4)
+```
+sed -i 's#http://\\[::1\\]:3000/#http://127.0.0.1:3000/#g' /etc/apache2/sites-available/iot-hsm.conf
+systemctl reload apache2
+```
 Uninstall dependencies
 ```
 apt remove opensc pkcs11-provider ykcs11 softhsm2 yubico-piv-tool

@@ -12,3 +12,5 @@
 - Clear Slot forces a slot refresh to avoid stale UI state.
 - Expert UI includes Management Key field for YubiKey key generation.
 
+## Deployment notes
+- Apache proxy should target 127.0.0.1:3000 (not ::1) if Node binds IPv4 only.
