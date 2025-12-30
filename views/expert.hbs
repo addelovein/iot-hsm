@@ -526,6 +526,7 @@
         let keyPairIDSelect = document.getElementById('keyPairIDSelect');
         let keyPairKeySelect = document.getElementById('keyPairKeySelect');
         let loginTypeSelect = document.getElementById('loginTypeSelect');
+        let keyPairMgmtKey = document.getElementById('keyPairMgmtKey');
 
         postRequest('/api/pkcs11/generatekey', {
                 label: label.value,
@@ -535,7 +536,8 @@
                 module: keypairgenmodule.value,
                 objectid: keyPairIDSelect.options[keyPairIDSelect.selectedIndex].value,
                 keytype: keyPairKeySelect.options[keyPairKeySelect.selectedIndex].value,
-                logintype: loginTypeSelect.options[loginTypeSelect.selectedIndex].value
+                logintype: loginTypeSelect.options[loginTypeSelect.selectedIndex].value,
+                mgmtkey: keyPairMgmtKey.value
             }, function(err, resp) {
             if(err) {
                 alert(resp.message);
@@ -638,6 +640,11 @@
                             <label for="keyPairInputPin">PIN</label>
                             <input type="password" class="form-control" id="keyPairInputPin" name="keyPairInputPin" aria-describedby="keyPairInputPinHelp" value="{{sopin}}" placeholder="">
                             <small id="keyPairInputPinHelp" class="form-text text-muted">Enter either the user or security officer PIN, depending on the HSM requirements</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="keyPairMgmtKey">Management Key (YubiKey PIV)</label>
+                            <input type="password" class="form-control" id="keyPairMgmtKey" name="keyPairMgmtKey" aria-describedby="keyPairMgmtKeyHelp" value="{{sopin}}" placeholder="">
+                            <small id="keyPairMgmtKeyHelp" class="form-text text-muted">Only required for YubiKey PIV key generation</small>
                         </div>
                 </div>
                 <div class="modal-footer">

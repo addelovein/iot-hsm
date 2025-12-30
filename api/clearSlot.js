@@ -38,6 +38,9 @@ function clearSlot(params, callback) {
                             logintype: 'Security Officer',
                             pin: sopin
                         }
+                        if(common.getTokenType(slots.slots[slotindex])=='yubikey') {
+                            request.mgmtkey = sopin;
+                        }
                         if(common.getTokenType(slots.slots[slotindex])=='softhsm') {
                             request.logintype = 'User';
                             request.pin = userpin
@@ -55,6 +58,33 @@ function clearSlot(params, callback) {
                                                 if(err) {
                                                     callback(err, false);
                                                 } else {
+                                                    slotlib.getSlots(true, function(refreshErr) {
+                                                        if(refreshErr) {
+                                                            callback(refreshErr, false);
+                                                        } else {
+                                                            callback(false, resp);
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        } else if(common.getTokenType(slots.slots[slotindex])=='yubikey') {
+                            slotlib.deleteObject(request, function(err, resp) {
+                                if(err) {
+                                    callback(err, false);
+                                } else {
+                                    request.type = 'Certificate Object';
+                                    slotlib.deleteObject(request, function(err, resp) {
+                                        if(err) {
+                                            callback(err, false);
+                                        } else {
+                                            slotlib.getSlots(true, function(refreshErr) {
+                                                if(refreshErr) {
+                                                    callback(refreshErr, false);
+                                                } else {
                                                     callback(false, resp);
                                                 }
                                             });
@@ -67,7 +97,13 @@ function clearSlot(params, callback) {
                                 if(err) {
                                     callback(err, false);
                                 } else {
-                                    callback(false, resp);
+                                    slotlib.getSlots(true, function(refreshErr) {
+                                        if(refreshErr) {
+                                            callback(refreshErr, false);
+                                        } else {
+                                            callback(false, resp);
+                                        }
+                                    });
                                 }
                             });
                         }

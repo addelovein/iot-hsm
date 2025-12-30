@@ -40,6 +40,9 @@ function processKeyPrep(params, callback) {
                             pin: sopin,
                             signpin: userpin
                         }
+                        if(common.getTokenType(slots.slots[slotindex])=='yubikey') {
+                            request.mgmtkey = sopin;
+                        }
                         if(params.keyAcquisition == 'generate') {
                             if(common.getTokenType(slots.slots[slotindex])=='softhsm') {
                                 request.logintype = 'User';
